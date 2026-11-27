@@ -1,150 +1,152 @@
 # Vibes Entertainment Website & Booking System
 
-## Product summary
+## Product overview
 
-Build a mobile-first, dark premium website and booking-management system for **Vibes Entertainment**, the DJ/MC business owned by Mr. Ofure Egharevba (DJ Ofu) in Benin City, Edo State, Nigeria. The site helps prospective customers understand services, browse approved event work, ask common questions, and submit structured enquiries. The owner uses a secure dashboard to manage leads, approved content and rates, availability, and booking decisions.
+Build a mobile-first, dark premium website and booking-management system for **Vibes Entertainment**, the DJ and event services business owned by Mr. Ofure Egharevba (DJ Ofu) in Benin City, Edo State, Nigeria. The public site presents approved services, rates, FAQs, and event work in English and Nigerian Pidgin. Customers can submit an event enquiry; the owner manages website and manually received enquiries in a secure dashboard.
 
-The system uses Next.js, Tailwind, Supabase (database and authentication), WhatsApp Business Cloud API, and Vercel. Bookings are never confirmed automatically. The system never sends follow-up messages to customers; 24-hour reminders go to the owner only.
+The system uses Next.js, Tailwind, Supabase (database and authentication), and Vercel. Bookings are never auto-confirmed. The owner approves every booking and availability is rechecked at approval. Customer contact and follow-up are manual; the system does not integrate with WhatsApp or send automated messages.
 
 ## Goals and success criteria
 
-- Give customers a clear, mobile-friendly way to understand services and submit complete enquiries.
-- Centralize leads and booking requests in an owner-only dashboard.
+- Give event organizers a polished, responsive way to understand services and submit complete enquiries.
+- Explain DJ, MC, and concert hype-man services distinctly; a hype man is never described as an MC.
+- Show only owner-approved prices and public content. Unlisted or variable events say “Quotation required.”
+- Centralize online and manually received enquiries, booking decisions, rates, content, and follow-up tracking for the owner.
 - Prevent conflicting confirmed events by checking availability again at approval time.
-- Let the owner edit prices and approve public content without code changes.
-- Answer chatbot questions only from approved FAQ and rate data; route unknown questions to the owner.
-- Remind the owner about inactive leads after 24 hours while avoiding duplicate or stale reminders.
+- Provide chatbot answers only from approved FAQ and rate data.
 
 ## Users
 
-- **Prospective customers:** browse services, rates, FAQs, gallery, and submit event details.
-- **Owner (Mr. Ofure / DJ Ofu):** review enquiries, manage availability, decide bookings, maintain rates/content, and follow up manually.
+- **Prospective customers:** browse the site, switch language, ask approved-information questions, and submit event enquiries.
+- **Owner (Mr. Ofure / DJ Ofu):** manage leads, availability, booking decisions, rates, FAQs, gallery content, and manual follow-ups.
 
-## Sitemap and main flows
+## Public website sitemap and experience
 
-### Public website
+Use a multi-page site with `/en/...` and `/pidgin/...` paths and a visible English / Nigerian Pidgin switcher. Pidgin wording is separately maintained and owner-approved; do not automatically translate published copy.
 
-- **Home:** business introduction, key services, selected work, and enquiry call to action.
-- **About:** approved business background and DJ Ofu profile.
-- **Services & Rates:** DJ, MC, hype-man, and DJ + MC packages. Show only rates approved for publication. Show “Quotation required” for unlisted events.
-- **Gallery:** owner-approved photographs and videos with publication rights.
-- **FAQ:** answers approved by the owner.
-- **Booking / Enquiry:** structured event and service form; show an approved indicative price or “Quotation required.”
-- **Contact:** approved business contact details and social links.
+- **Home:** editorial hero, three service pillars (DJ artistry, MC, concert hype-man), approved gallery preview, DJ Ofu introduction, approved rates snapshot, optional audio sample, and booking call to action. Hide unsupported claims and unavailable assets.
+- **About DJ Ofu:** approved biography and career details.
+- **Services & Rates:** service descriptions, confirmed packages and minimum starting rates, plus custom-quotation categories.
+- **Gallery:** approved, rights-cleared event media with category filters.
+- **FAQ:** owner-approved questions and answers in each supported language.
+- **Booking / Enquiry:** four-step progressive form for contact, event/location, requested services/equipment, and musical direction/special requirements.
+- **Contact:** only owner-approved contact details, address, and social links.
 
-### Admin dashboard
+### Visual system
 
-- **Overview:** pending requests, upcoming confirmed events, and follow-ups due.
-- **Enquiries:** search and inspect leads, update status, log contact/customer response, and review activity history.
-- **Booking requests:** review details and approve or decline requests.
-- **Availability:** see confirmed bookings and create date blocks.
-- **Rates & services:** edit rates, service/event catalogue, and publication approval.
-- **FAQ & content:** manage public FAQ and content.
-- **Gallery:** manage media, captions, permissions, and publication state.
-- **Settings:** owner profile, contact information, and notification setup.
+- Afro-luxury sonic direction: midnight charcoal backgrounds (`#0B0E16`, `#10131B`), layered dark surfaces (`#181B24`, `#1E222D`), warm gold primary accent (`#E5B842`) and hover (`#F3CE6D`), white primary text, and muted gray secondary text.
+- Use Syne for headings and Plus Jakarta Sans or Inter for body/UI text. Maintain accessible contrast and touch targets of at least 48 px on mobile.
+- Use 8 px standard card/input radii and pill styling for tags and primary actions.
+- Responsive navigation: desktop links and booking CTA; mobile compact header, language toggle, and expandable drawer.
+- Keep an “Ask DJ Ofu” chatbot entry available across public pages; it must follow the approved-data rules below.
 
-## Functional requirements
+### Public rates and content
 
-### Enquiry capture
+- Confirmed Wedding DJ + MC package: **₦1,500,000**.
+- Confirmed Birthday DJ + MC package: **₦1,100,000**.
+- Confirmed starting price floors: DJ **₦200,000**, MC **₦300,000**, concert hype man **₦300,000**.
+- Sound and equipment are included; transport is included at a fixed amount. Do not invent an amount or imply a separate charge. Overtime and changed plans may cost extra at owner-set charges.
+- Store all rates in owner-editable data, not code. Publicly show only rates approved for publication. Use “Quotation required” for custom/unlisted events and variable scope. Do not derive a discount from component rates.
+- Package durations and specific equipment/production inclusions are not confirmed and must not be advertised until the owner approves them.
+- Do not publish unverified ratings, guest counts, years of experience, equipment models, setup-time promises, touring claims, client names, or testimonials.
+- Use only approved event images/audio. Omit the audio player until an owner-provided sample and its streaming source are approved.
+- Phone numbers, WhatsApp contact details, physical addresses, and social handles in the prototype are placeholders. Do not publish them until replaced with owner-approved details. A manually operated direct contact link may appear as a secondary action once approved; it is not an application integration.
 
-Collect customer name and phone, event type, date, venue/location, duration, expected audience, requested service(s), sound/equipment needs, and special requirements. Support custom/unlisted event types. Save each submission as an enquiry and pending booking request; never imply that submission reserves or confirms the date.
+## Booking and enquiry requirements
 
-### Booking decisions and availability
+### Public booking form
 
-Use a **single event per date** availability model for the initial release.
+Use four steps:
 
-1. Validate required details and check the requested date against confirmed bookings and owner-created availability blocks.
-2. Save a request as `pending_owner_approval`; submission does not reserve the date.
-3. Notify the owner of the pending request through the dashboard and, when configured, an owner-only WhatsApp notification.
-4. On owner approval, execute an atomic server-side transaction that rechecks date availability. If clear, create the confirmed booking and mark the request `confirmed`. If no longer available, do not confirm it and return a conflict for the owner to resolve.
-5. If requests compete for a date, the first successful approval transaction wins. Other requests stay pending for owner action.
-6. Declines record the owner’s decision. Any change to the requested date or services returns the request to pending approval and requires another availability check.
+1. **Contact:** full name and phone are required; email is optional. Do not collect a separate WhatsApp number.
+2. **Event and location:** event type, event date, expected audience band, estimated duration, venue name, and location. Support custom/other events.
+3. **Service and equipment:** choose DJ, MC, hype man, combined package, or custom quote; capture equipment/sound needs. The owner may review and change final scope.
+4. **Musical direction:** cultural protocol, special requests, and do-not-play notes.
 
-### Lead statuses and owner follow-up
+Show an estimate only when the selected rate is approved for publication. The confirmation notice must say the request is an enquiry pending owner review, not a reservation or confirmed booking. Do not show a live availability calendar. Do not imply that the displayed estimate is a final quote when the scope may change.
 
-Support these lead statuses: `new_enquiry`, `in_conversation`, `awaiting_customer_response`, `follow_up_required`, `follow_up_completed`, `converted_to_booking`, `declined`, and `lost_lead`. Record timestamped status changes and owner contact/customer response events. Owner follow-up is always manual.
+### Approval and availability
 
-### 24-hour reminder
+Use a **single confirmed event per date** model for v1.
 
-When a lead is marked `awaiting_customer_response`, schedule one owner reminder for 24 hours after the last owner contact logged in the system. A customer response before the due time cancels it; a newly logged owner contact resets it. At execution, recheck that the lead remains awaiting a customer response and that the reminder is still current. Notify the owner only, including customer name and phone, event type, requested date, and enquiry summary. Record delivery outcomes and support retries without creating duplicate reminders.
+1. Validate the submitted event details and check the selected date against confirmed bookings and owner-created date blocks.
+2. Save an available-date request as `pending_owner_approval`. Submission does not reserve or block the date.
+3. Notify the owner in the admin dashboard.
+4. When the owner approves, run an atomic server-side transaction that rechecks availability. If available, create the confirmed booking and mark the request `confirmed`; if no longer available, create no booking and return a conflict for owner resolution.
+5. If requests compete for a date, the first successful approval transaction wins. Other requests remain pending until the owner resolves them.
+6. A date or service change returns the request to pending approval and requires a new availability check. Declines do not block dates.
 
-Conversations outside the integrated system cannot be detected reliably. Provide an explicit dashboard action to log an owner contact or customer response. Do not infer activity from personal WhatsApp messages.
+## Owner admin experience
 
-### Pricing and quoting
+Owner-only navigation: **Enquiry Inbox**, **Rates & Add-ons**, **Calendar & Blackouts**, plus **Exit to Live Site**. Use a persistent desktop sidebar and a mobile drawer.
 
-- Business name: **Vibes Entertainment**.
-- Confirmed DJ + MC packages: Wedding **₦1,500,000**; Birthday **₦1,100,000**.
-- Price floors: DJ **₦200,000**; MC **₦300,000**; concert hype man **₦300,000**.
-- Sound and equipment are included. Transport is included at a fixed amount.
-- Overtime and changed plans may be charged extra; the owner sets the charges.
-- Prices are editable from the dashboard, stored as data, and never hard-coded into the site or chatbot.
-- Only rates explicitly approved for public display may appear publicly. Other working rates from the brief remain draft until approved.
-- Unlisted and variable-price event types display “Quotation required.” Never derive a package discount from individual rates.
-- Keep DJ, MC, and hype-man descriptions distinct. Hype man must never be described as MC.
+- **Enquiry Inbox:** dynamic totals, due-today and overdue follow-ups, pipeline filters, and searchable enquiry list. Do not use prototype KPI counts or mock customer records as live business data; show real data or empty states.
+- **Manual enquiry form:** allow the owner to create an enquiry received by phone, referral, or other channel and edit existing records.
+- **Enquiry detail/edit:** manage customer/event details, enquiry source, lead status, owner-entered quote, private crew notes, follow-up date/time, and activity history. A manual call link may be shown only when an approved customer phone number exists.
+- **Follow-up tracking:** list enquiries whose owner-selected follow-up date is today or earlier. The owner records contact and marks the follow-up completed or sets a new date. No 24-hour automation, reminders, WhatsApp notifications, or customer messages.
+- **Booking requests:** review, approve, or decline website requests and see the approval-time availability result.
+- **Rates & Add-ons:** edit service rates and publication approval without changing code.
+- **Calendar & Blackouts:** view confirmed events and owner-created unavailable dates.
+- **FAQ, Gallery, and Settings:** manage approved public content, media rights/publication state, business details, and owner profile.
 
-### Chatbot
+### Lead states
 
-Use a constrained FAQ/rate lookup experience. Answer only from owner-approved published FAQ and rate records. Explain approved services and prices, collect basic enquiry details where appropriate, and link to the enquiry form. For unknown, variable, or unlisted pricing, say “Quotation required” and offer the form. Do not invent availability, pricing, policies, past clients, or service promises. Refer anything not directly supported by approved data to the owner.
+Support `new_enquiry`, `in_conversation`, `awaiting_customer_response`, `follow_up_required`, `follow_up_completed`, `converted_to_booking`, `declined`, and `lost_lead`. Pipeline labels such as “Pending Review,” “Quote Sent,” and “Confirmed” must map to the underlying lead/request states rather than create conflicting statuses. Record manual contact and status changes in the activity history.
 
-### Admin security
+## Chatbot
 
-Use Supabase Auth for owner access and row-level security for admin data. Public endpoints expose only approved public content and rates. Customer contact details, lead activity, and booking administration remain private to authorized owner accounts.
+Use a constrained FAQ and rate lookup. The chatbot may explain approved services, show rates approved for publication, collect basic event details, and link to the booking form. For unlisted/variable rates or unsupported questions, say “Quotation required” or that it cannot confirm, then direct the customer to the form or owner-approved contact route. Never invent price, availability, policy, client history, or service promises. Keep hype man distinct from MC in both languages.
 
-## Proposed database schema
+## Data model and interfaces
 
-Use UUID primary keys, timestamps, and foreign keys. Store amounts as integer NGN values. Validate state transitions on the server and preserve an activity/audit record for owner actions.
+Use Supabase Auth and row-level security for owner data. Public queries expose only published approved content/rates; customer contact details, private notes, leads, and booking administration are owner-only.
 
-- **`profiles`**: user ID, role, display name, owner contact and notification settings.
-- **`services`**: service key/name, description, active state; distinguish DJ, MC, and hype man.
-- **`event_types`**: event key/name, active state, and whether the event type is custom/unlisted.
-- **`rates`**: event type, service or package, amount, currency, approval/publication status, effective dates, and owner update metadata.
-- **`availability_blocks`**: date or date range, blocked state, owner note, and creator.
-- **`leads`**: customer name/phone, event type, event date, venue, duration, audience estimate, requested services, sound/equipment needs, special requirements, lead status, last owner contact, and customer-response timestamps.
-- **`booking_requests`**: lead reference, request status, quoted amount or quotation-required state, submitted details, owner decision and timestamp, and approval-time availability check metadata.
-- **`bookings`**: confirmed event date, services, source request, final owner-approved terms, and confirmation timestamp. Enforce no more than one confirmed booking per date in the initial model.
-- **`lead_activities`**: lead reference, event type (status change, owner contact, customer response, reminder, decision), timestamp, actor, and notes.
-- **`faqs`**: question, answer, topic, owner approval, publication state, and update metadata.
-- **`gallery_items`**: media reference, caption, rights/approval state, publication state, and ordering.
-- **`reminder_jobs`**: lead reference, due time, generation/version, pending/sent/cancelled/failed state, provider response, and attempt metadata. Enforce one current pending reminder per lead.
+- **`profiles`**: owner identity, role, and contact settings.
+- **`services` / `event_types`**: service and event catalogues, including custom/unlisted types.
+- **`rates`**: service/package, event type, NGN amount, publication approval, effective dates, and owner update metadata.
+- **`availability_blocks`**: blocked dates/ranges and owner note.
+- **`leads`**: customer name, required phone, optional email, event details, requested services, equipment/musical notes, source, status, owner quote, private notes, and optional next follow-up date/time.
+- **`booking_requests`**: lead reference, request status, submitted details, owner decision, and approval-time availability check metadata.
+- **`bookings`**: confirmed date, services, source request, final owner-approved terms, and confirmation timestamp; enforce one confirmed booking per date in v1.
+- **`lead_activities`**: timestamped status changes, manual contacts/responses, follow-up completion, and booking decisions.
+- **`faqs` / `gallery_items`**: separate approved English and Nigerian Pidgin content, approval/publication state, and media rights status.
 
-Recommended request states: `pending_owner_approval`, `confirmed`, `declined`, `cancelled`. Confirmed bookings are separate records so availability queries use the authoritative approved event.
+Use integer NGN amounts and UUID primary keys with timestamps and foreign keys. Do not add WhatsApp provider settings or automated reminder-job records.
 
-## Milestones and build order
+## Milestones
 
-1. **Resolve launch inputs:** confirm remaining public rates, transport amount/presentation, owner contact details, policies, brand assets, FAQ answers, gallery permissions, and WhatsApp Cloud API access.
-2. **Design and public website:** approve sitemap and mobile-first dark premium layouts; build home, about, services/rates, gallery, FAQ, contact, and enquiry experience.
-3. **Database and owner access:** implement schema, Supabase Auth, row-level security, audit history, and dashboard foundation.
-4. **Enquiries and booking approval:** implement request capture, date blocks, pending state, atomic approval-time availability check, confirmation, and decline handling.
-5. **Lead management and reminders:** implement status/contact logging, 24-hour scheduling, cancellation/reset, duplicate prevention, and owner-only WhatsApp notification.
-6. **Editable content and chatbot:** implement rate/service/FAQ/gallery administration and approved-only chatbot retrieval with quotation fallback.
-7. **Acceptance review and launch preparation:** run end-to-end acceptance scenarios, verify access controls and mobile behavior, configure production notifications, deploy to Vercel, and provide owner handover instructions.
+1. **Approve design and content inputs:** review Stitch screens; obtain approved logo, biography, contact details, translations, FAQs, media/audio rights, remaining rates, and any package-specific inclusions.
+2. **Public site:** implement responsive page shell, language routes, service/rates data, gallery, FAQ, booking form, and chatbot entry.
+3. **Database and owner access:** add schema, authentication, row-level security, and admin shell.
+4. **Booking and enquiries:** implement public submission, manual admin entry, statuses, availability blocks, atomic approval recheck, and decisions.
+5. **Owner follow-up and content management:** implement follow-up due list, activity logging, rates/FAQ/gallery editing, and approved-content publication.
+6. **Acceptance and launch:** verify mobile/desktop behavior, languages, booking conflicts, pricing/content gates, admin permissions, and public contact details; deploy to Vercel and hand over owner instructions.
 
 ## Acceptance scenarios
 
-- Submitting an available-date request results in `pending_owner_approval`, not a confirmed booking or date reservation.
-- If a date is booked or blocked after submission, approval fails the fresh availability check and creates no confirmed booking.
-- Two concurrent approvals for the same date cannot both succeed.
-- Owner decline does not create or block a booking.
-- A logged customer response cancels the due reminder; a new owner contact resets its due time; repeated processing does not send duplicate reminders.
-- A reminder goes to the owner and contains the agreed lead details; no customer messaging is sent by the system.
-- Public site and chatbot show only published owner-approved rates; unlisted events say “Quotation required.”
-- Chatbot keeps hype-man service distinct from MC, and unknown questions route to the owner.
-- Owner can change a rate in the dashboard without a code change.
-- Unauthorized users cannot read or modify leads, customer contact data, or admin records.
+- Customer form works as a four-step responsive flow, requires phone, permits an optional email, and presents no separate WhatsApp field.
+- Form submission creates a pending request, never a confirmed booking or date reservation.
+- A date blocked or booked after submission prevents owner approval; two concurrent approvals cannot confirm the same date.
+- Owner can manually create/edit a lead and set a follow-up date. Due/overdue leads appear in the admin list; completing or rescheduling a follow-up updates that list.
+- The application sends no WhatsApp API notifications, automated customer messages, or 24-hour reminders.
+- Public site/chatbot show only owner-approved published prices and content. Unlisted events show “Quotation required.”
+- Pidgin has separate owner-approved copy; chatbot keeps hype man distinct from MC in both languages.
+- Prototype claims, mock records, placeholder contacts, and unapproved package inclusions never appear as live public content.
+- Unauthorized users cannot read or modify customer contact data, leads, private notes, rates, or booking administration.
 
 ## Open questions and risks
 
-- **WhatsApp access:** Confirm the existing WhatsApp Business account is eligible/configured for Cloud API use and provide Meta business/app access and the notification recipient. Template requirements and provider charges need confirmation before launch.
-- **Fixed transport amount:** The amount and whether it is one business-wide value or varies by coverage area are unspecified. Confirm whether it is displayed separately or simply treated as included.
-- **Remaining rates:** Confirm which other working rates from the brief are approved for public display, including corporate student/non-student, small events, and club/lounge services.
-- **Reminder clock:** Confirm the proposed interpretation: 24 hours from the owner’s last logged contact while the lead awaits customer response. Off-system conversations require manual logging.
-- **Availability exceptions:** Confirm whether the owner ever accepts more than one event on a date. The initial model allows one; supporting compatible same-day bookings later requires service/resource capacity rules.
-- **Policies:** Deposit/payment, cancellation, rescheduling, duration, and service coverage policies are not confirmed and must not be promised by the site or chatbot until approved.
-- **Data operations:** Set customer-data retention/access expectations, choose a reliable scheduled-job mechanism, and document notification failure/recovery handling.
+- Confirm remaining public rates for corporate, small-event, club/lounge, and other categories; only confirmed base prices are currently defined.
+- Provide owner-approved phone, address, social links, biography, logo, gallery media, audio sample, English/Pidgin copy, and FAQ answers before launch.
+- Confirm whether any proposed package duration, equipment inclusion, production effect, deposit, contract, escrow, setup timing, rating, or experience claim is factual and approved. Until confirmed, keep it unpublished.
+- The fixed transport amount is unspecified. Transport remains included; do not show or infer a numeric amount.
+- Deposit/payment, cancellation, rescheduling, duration, coverage area, and special-equipment policies are not confirmed. Do not promise these through the site or chatbot.
+- The initial availability model allows one event per date. Any future same-day capacity requires an owner-defined service/resource model.
+- Set customer-data retention expectations and operational monitoring for form delivery and admin access before launch.
 
 ## Assumptions
 
-- The initial system is owner-managed and does not include customer accounts, online payments/deposits, or advanced calendar integration.
-- The initial availability rule permits one confirmed event per date.
-- Confirmed pricing decisions in this PRD supersede conflicting or unresolved wording in the client brief. All remaining rates stay unpublished until the owner approves them.
-- WhatsApp is used for owner notifications only; follow-up messages to customers remain manual.
+- The Stitch prototype is the approved visual direction, subject to the content and business-rule gates in this PRD.
+- Website enquiries and manually entered leads share the same owner-managed lead records.
+- Owner-selected follow-up dates and a dashboard due list replace automated 24-hour reminders.
+- No customer accounts, online payments/deposits, WhatsApp API, automated customer messaging, or advanced calendar integration are in v1.
