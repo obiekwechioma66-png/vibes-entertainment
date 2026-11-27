@@ -50,7 +50,7 @@ Use a multi-page site with `/en/...` and `/pidgin/...` paths and a visible Engli
 - Package durations and specific equipment/production inclusions are not confirmed and must not be advertised until the owner approves them.
 - Do not publish unverified ratings, guest counts, years of experience, equipment models, setup-time promises, touring claims, client names, or testimonials.
 - Use only approved event images/audio. Omit the audio player until an owner-provided sample and its streaming source are approved.
-- Phone numbers, WhatsApp contact details, physical addresses, and social handles in the prototype are placeholders. Do not publish them until replaced with owner-approved details. A manually operated direct contact link may appear as a secondary action once approved; it is not an application integration.
+- Approved business contact: **07044003353**. Approved location: **Flowell Shopping Mall – Uselu, Benin City**. Show these on the Contact page and as a secondary manual contact option. Do not assume the phone number is WhatsApp-enabled; add a WhatsApp link only after that is confirmed. Other contact details and social handles remain placeholders until approved. This is not an application integration.
 
 ## Booking and enquiry requirements
 
@@ -115,7 +115,7 @@ Use integer NGN amounts and UUID primary keys with timestamps and foreign keys. 
 
 ## Milestones
 
-1. **Approve design and content inputs:** review Stitch screens; obtain approved logo, biography, contact details, translations, FAQs, media/audio rights, remaining rates, and any package-specific inclusions.
+1. **Approve design and content inputs:** review Stitch screens; obtain approved logo, biography, social links, translations, FAQs, media/audio rights, remaining rates, and any package-specific inclusions.
 2. **Public site:** implement responsive page shell, language routes, service/rates data, gallery, FAQ, booking form, and chatbot entry.
 3. **Database and owner access:** add schema, authentication, row-level security, and admin shell.
 4. **Booking and enquiries:** implement public submission, manual admin entry, statuses, availability blocks, atomic approval recheck, and decisions.
@@ -137,7 +137,7 @@ Use integer NGN amounts and UUID primary keys with timestamps and foreign keys. 
 ## Open questions and risks
 
 - Confirm remaining public rates for corporate, small-event, club/lounge, and other categories; only confirmed base prices are currently defined.
-- Provide owner-approved phone, address, social links, biography, logo, gallery media, audio sample, English/Pidgin copy, and FAQ answers before launch.
+- Provide approved social links, biography, logo, gallery media, audio sample, English/Pidgin copy, and FAQ answers before launch. The confirmed phone and location are listed in the public rates and content requirements.
 - Confirm whether any proposed package duration, equipment inclusion, production effect, deposit, contract, escrow, setup timing, rating, or experience claim is factual and approved. Until confirmed, keep it unpublished.
 - The fixed transport amount is unspecified. Transport remains included; do not show or infer a numeric amount.
 - Deposit/payment, cancellation, rescheduling, duration, coverage area, and special-equipment policies are not confirmed. Do not promise these through the site or chatbot.
